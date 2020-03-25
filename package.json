@@ -9,7 +9,7 @@
     "start": "node index.js"
   },
   "engines": {
-    "node": "10.15.2"
+    "node": "12.16.0"
   },
   "author": "",
   "license": "ISC",
