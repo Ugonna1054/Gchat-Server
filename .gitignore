@@ -1,0 +1,5 @@
+logfile.log
+/node_modules
+uncaughtexceptions.log
+.env
+config
