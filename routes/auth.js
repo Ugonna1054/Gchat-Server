@@ -3,8 +3,11 @@ const router = express.Router();
 const auth = require("../controllers/auth")
 const auth_ = require("../middleware/auth")
 
-//Sign in User
-router.post('/login', auth.Login)
+//Sign in User Start
+router.post('/login', auth.LoginStart)
+
+//Sign in User Complete
+router.post('/login/verify/:code', auth.LoginComplete)
 
 
 //Signout User

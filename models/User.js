@@ -40,7 +40,8 @@ const userSchema = new mongoose.Schema({
   },
   phone: {
     type: String,
-    //required: true
+    required: true,
+    unique: true,
   },
   username: {
     index: true,
@@ -84,7 +85,7 @@ const userSchema = new mongoose.Schema({
     timestamps: true
   })
 
-//function to generate jwt tokenk
+//function to generate jwt token
 userSchema.methods.generateAuthToken = function () {
   const token = jwt.sign({
     _id: this._id,
@@ -102,16 +103,11 @@ const User = mongoose.model('User', userSchema)
 //Joi validation function for completing signup
 function validate(user) {
   const schema = Joi.object().keys({
-    password: Joi.string().min(6).max(6).required(),
     name: Joi.string().max(50).required(),
     school: Joi.string().max(50).required(),
     department: Joi.string().max(50).required(),
     region: Joi.string().max(50).required(),
-    phone: Joi.string().min(11).max(20).required(),
     country: Joi.string().max(30).required(),
-    displayPicture: Joi.string().max(50).optional().allow(""),
-    about: Joi.string().max(200).optional().allow(""),
-
   })
 
   return schema.validate(user);
@@ -120,8 +116,7 @@ function validate(user) {
 //Joi validation function for login
 function validateLogin(user) {
   const schema = Joi.object().keys({
-    username: Joi.string().required(),
-    password: Joi.string().required(),
+    username: Joi.string().required()
   })
 
   return schema.validate(user);
@@ -151,6 +146,7 @@ function validateEmail(user) {
   const schema = Joi.object().keys({
     username: Joi.string().min(3).max(15).required(),
     email: Joi.string().email().required(),
+    phone: Joi.string().min(11).max(15).required(),
   })
 
   return schema.validate(user);

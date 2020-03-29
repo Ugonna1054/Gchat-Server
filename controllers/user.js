@@ -25,7 +25,7 @@ const user = {
         const username = req.body.username;
         const email = req.body.email;
         const code = generateCode();
-        const phone = "";
+        const phone = req.body.phone;
         const name = "";
         const password = "";
         const school = "";
@@ -54,7 +54,7 @@ const user = {
             }
         )
 
-        await user.save()
+        await user.save();
 
         res.send({ success: true, message: "Successfully registered" })
 
@@ -385,26 +385,39 @@ const user = {
 
     //get one user by id
     getOneUser: async (req, res) => {
+        //define req.body variables
         const id = req.params.id
+
+        //check if user exists
         const user = await User.findById(id).select('-password'); //Other properties can be excluded from the user like credit card details e.t.c
         if (!user) return res.status(404).send({ success: false, message: "User not found" })
+        
         res.send(user);
     },
 
     //get user profile
     getUserProfile: async (req, res) => {
+        //check if user exists
         const user = await User.findById(req.user._id).select('-password'); //Other properties can be excluded from the user like credit card details e.t.c
         if (!user) return res.status(404).send({ success: false, message: "User not found" })
+        
         res.send(user);
     },
 
     //Verify email
     verify: async (req, res) => {
+        //define req.body parameters
         const code = req.params.code
+        
+        //check if user exists
         const user = await User.findOne({ code }).select('-password'); //Other properties can be excluded from the user like credit card details e.t.c
         if (!user) return res.status(404).send({ success: false, message: "Invalid Code" })
+        
+        //update users isVerified status and clear code
         user.isVerified = true;
         user.code = "";
+
+        //save user and send response to client
         await user.save();
         res.send({ success: true, message: "Verification Successful" })
     },
@@ -423,13 +436,12 @@ const user = {
         //check if user is verified
         if (!user.isVerified) return res.status(403).send({ success: false, message: "Verification Needed" })
 
-        //hash password with salt   
-        const salt = await bcrypt.genSalt(10);
-        req.body.password = await bcrypt.hash(req.body.password, salt);
-
+        //Generate new JWT token
+        const token = user.generateAuthToken()
+       
         //save and update
         await User.updateOne({email:email} ,req.body)
-        .then(() => res.send({success:true,  message:"Successfully Registered"}))
+        .then(() => res.send({success:true,  message:"Successfully Registered", token}))
         .catch(err => res.status(500).send(err))
 
     },
