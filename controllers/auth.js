@@ -293,9 +293,9 @@ const auth = {
                                 <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%'>
                                     <tr>
                                         <td style='padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;'>
-                                            <h1 style='margin: 0 0 10px; font-size: 25px; line-height: 30px; color: #333333; font-weight: bold;'>Verify Your Email</h1>
+                                            <h1 style='margin: 0 0 10px; font-size: 25px; line-height: 30px; color: #333333; font-weight: bold;'>One Time Password</h1>
                                             <p style='margin: 0 0 10px;'>Hello ${user.username}!</p>
-                                            <p style='margin: 0 0 10px;'>Your verification code is <strong>${code}</strong> </p>
+                                            <p style='margin: 0 0 10px;'>Your otp is <strong>${code}</strong> </p>
                                             <p style='margin: 0 0 10px;'>Enjoy your stay :)  </p>
                                         </td>
                                     </tr>
