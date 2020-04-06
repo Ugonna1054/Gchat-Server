@@ -1,5 +1,5 @@
 
-const { Group, validateGroup } = require("../models/Group")
+const { Group, validateGroup } = require("../models/Groupss")
 
 
 const group = {

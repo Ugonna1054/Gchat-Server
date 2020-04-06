@@ -1,5 +1,5 @@
 const { Message, validateMessage } = require('../models/message');
-const { Group } = require("../models/Group");
+const { Group } = require("../models/Groupss");
 
 const message = {
     //post new message
