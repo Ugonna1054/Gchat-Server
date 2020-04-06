@@ -13,6 +13,10 @@ const group = {
         const name = req.body.name;
         const creator = req.user._id;
         let members = req.body.members;
+        const lastMessage = {
+            sender:"5e849fac5c867d52e1ef1846",
+            message:""
+        }
 
         //add the creator as part of the group members
         members.unshift({
@@ -28,7 +32,8 @@ const group = {
         const group_ = new Group({
             name,
             creator,
-            members
+            members,
+            lastMessage
         })
 
         //save

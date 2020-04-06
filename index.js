@@ -158,8 +158,8 @@ io.on('connection', (socket) => {
   socket.on('joined', (data) => {
     socket.join(data)
     //socket.to(data.group).emit('joined', data)
-    console.log(data)
-    console.log("connectedUsers");
+    //console.log(data)
+    console.log("new joiner");
 
   });
 

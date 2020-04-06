@@ -1439,3 +1439,10 @@
 {"level":"info","message":"Connected to chat db......","timestamp":"2020-04-06T03:27:55.295Z"}
 {"level":"info","message":"Connected to chat db......","timestamp":"2020-04-06T07:01:42.683Z"}
 {"level":"info","message":"Connected to chat db......","timestamp":"2020-04-06T07:03:04.555Z"}
+{"message":"Cannot set property 'sender' of undefined","stack":"TypeError: Cannot set property 'sender' of undefined\n    at postMessage (/Users/newuser/Documents/Javascript/Socket.io/Gchat/Backend1/Gchat-Server/controllers/message.js:32:35)\n    at runMicrotasks (<anonymous>)\n    at processTicksAndRejections (internal/process/task_queues.js:97:5)","level":"error","timestamp":"2020-04-06T07:31:57.593Z"}
+{"message":"Cannot set property 'sender' of undefined","stack":"TypeError: Cannot set property 'sender' of undefined\n    at postMessage (/Users/newuser/Documents/Javascript/Socket.io/Gchat/Backend1/Gchat-Server/controllers/message.js:32:35)\n    at runMicrotasks (<anonymous>)\n    at processTicksAndRejections (internal/process/task_queues.js:97:5)","level":"error","timestamp":"2020-04-06T07:33:26.431Z"}
+{"level":"info","message":"Connected to chat db......","timestamp":"2020-04-06T07:35:29.095Z"}
+{"level":"info","message":"Connected to chat db......","timestamp":"2020-04-06T07:35:35.383Z"}
+{"level":"info","message":"Connected to chat db......","timestamp":"2020-04-06T07:36:07.486Z"}
+{"level":"info","message":"Connected to chat db......","timestamp":"2020-04-06T07:36:20.390Z"}
+{"level":"info","message":"Connected to chat db......","timestamp":"2020-04-06T07:52:39.974Z"}
