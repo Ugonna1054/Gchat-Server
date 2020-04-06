@@ -11,7 +11,7 @@ router.post('/', auth, message.postMessage )
 router.get('/', message.getMessage);
 
 //get messages from a single group
-router.get('/:name', message.getSingleMessage)
+router.get('/:id', auth,  message.getSingleMessage)
 
 //get private message between two people
 router.get("/private/:sender/:receiver", message.getPrivateMessage)

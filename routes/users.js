@@ -16,10 +16,11 @@ const cpUpload = upload.fields([{ name: 'displayPicture', maxCount: 1 }])
 
 
 
-//post and get request to Create new user and get all users
-router.route('/')
-    .get(user.getUsers)
-    .post(user.createUser)
+//Create new user
+router.route('/').post(user.createUser)
+
+//Get All Users
+router.get('/', auth, user.getUsers);
 
 //Get User profile
 router.get('/me', auth, user.getUserProfile);

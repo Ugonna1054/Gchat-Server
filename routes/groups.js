@@ -1,19 +1,22 @@
-// const group = require ("../controllers/group")
-// const express = require('express');
-// const router = express.Router();
-// const {auth} = require("../middleware/auth")
+const group = require ("../controllers/group")
+const express = require('express');
+const router = express.Router();
+const {auth} = require("../middleware/auth")
 
-// //create/join group
-// router.post('/', auth, group.addGroup)
+//create group
+router.post('/', auth, group.createGroup)
 
-// //get all groups
-// router.get('/', group.getAllGroup)
+//join group
+router.post('/join/:id', auth, group.joinGroup)
 
-// //get a single group
-// router.get('/:name', group.getSingleGroup)
+//get all groups
+router.get('/', auth, group.getAllGroup)
 
-// //edit group name
-// router.put('/:name', auth, group.editGroup)
+//get a single group
+router.get('/:name', group.getSingleGroup)
+
+//edit group name
+router.put('/:name', auth, group.editGroup)
 
 
-// module.exports = (router);
+module.exports = (router);

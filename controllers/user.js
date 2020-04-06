@@ -376,10 +376,13 @@ const user = {
         `)
     },
 
-    //get all users
+    //get all users except the signed in user
     getUsers: async (req, res) => {
-        const user = await User.find().select('-password');
+        let id = req.user._id
+        let user = await User.find().select('-password');
         if (!user[0]) return res.status(404).send({ success: false, message: "User not found" });
+       
+        user = user.filter(item => item._id != id)
         res.send(user)
     },
 

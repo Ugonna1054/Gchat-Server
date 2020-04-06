@@ -3,7 +3,7 @@ const socket = require('socket.io');
 const port = process.env.PORT || 5000;
 const cors = require('cors')
 const app = express();
-const {createChat} = require ("./utils/factories")
+const { createChat } = require("./utils/factories")
 //const Message = require('./models/message');
 app.use(cors())
 
@@ -124,12 +124,12 @@ io.on('connection', (socket) => {
 
   console.log('A user connected', socket.id);
 
-  //  socket.emit('connections', Object.keys(io.sockets.connected).length);
+  //socket.emit('connections', Object.keys(io.sockets.connected).length);
 
   //User Connects
   socket.on("userConnected", (data) => {
     data.socketId = socket.id;
-    connectedUsers[data.name] = data;
+    connectedUsers[data.id] = data;
     socket.user = data
     console.log(connectedUsers);
 
@@ -138,7 +138,7 @@ io.on('connection', (socket) => {
   //User disconnects
   socket.on('disconnect', () => {
     if ("user" in socket) {
-      connectedUsers = removeUser(connectedUsers, socket.user.name)
+      connectedUsers = removeUser(connectedUsers, socket.user.id)
 
       io.emit("userDisconnected", connectedUsers)
       console.log("Disconnect", connectedUsers);
@@ -146,53 +146,75 @@ io.on('connection', (socket) => {
   })
 
   //User logsout
-	socket.on("logout", () => {
-		connectedUsers = removeUser(connectedUsers, socket.user.name)
-		io.emit("userDisconnected", connectedUsers)
+  socket.on("logout", () => {
+    connectedUsers = removeUser(connectedUsers, socket.user.name)
+    io.emit("userDisconnected", connectedUsers)
     console.log("Disconnect", connectedUsers);
-	})
-
-  //when user sends a message
-  socket.on("chatMessage", ({ receiver, message, sender }) => {
-    if (receiver in connectedUsers) {
-      const receiverSocket = connectedUsers[receiver].socketId
-       socket.to(receiverSocket).emit("chatMessage", {
-         message,
-         sender
-       });
-       console.log(true);
-       return;
-    }
-    console.log(false);
-    
   })
 
-  //when user is typing
-  socket.on('typing', ({sender, receiver}) => {
-    if (receiver in connectedUsers) {
-      const receiverSocket = connectedUsers[receiver].socketId
-       socket.to(receiverSocket).emit("typing", sender);
-       console.log(true);
-       return;
-    }
-    console.log(false);
-  })
+  //events for group message
 
-  //Private message
-  socket.on("privateMessage", ({ receiver, sender }) => {
-		if (receiver in connectedUsers) {
-			const newChat = createChat(`${receiver}&${sender}`, [receiver, sender] )
-			const receiverSocket = connectedUsers[receiver].socketId
-			socket.to(receiverSocket).emit("privateMessage", newChat)
-      socket.emit("privateMessage", newChat);
+  //whn user joins a group
+  socket.on('joined', (data) => {
+    socket.join(data)
+    //socket.to(data.group).emit('joined', data)
+    console.log(data)
+    console.log("connectedUsers");
+
+  });
+
+  //when user sends a group message
+  socket.on("chatMessage", (data) => {
+    if (data.id in connectedUsers) {
+      socket.to(data.group).emit("chatMessage", data);
       console.log(true);
-      console.log(newChat);
+      console.log(data);
       
       return;
     }
     console.log(false);
-    
-	})
+
+  })
+
+  //when user is typing in a groupchat
+  socket.on('typing', ({ sender, receiver }) => {
+    if (receiver in connectedUsers) {
+      const receiverSocket = connectedUsers[receiver].socketId
+      socket.to(receiverSocket).emit("typing", sender);
+      console.log(true);
+      return;
+    }
+    console.log(false);
+  })
+
+
+  //events for private message
+
+  //Private message
+  socket.on("privateMessage", ({ receiver, sender }) => {
+    if (receiver in connectedUsers) {
+      const newChat = createChat(`${receiver}&${sender}`, [receiver, sender])
+      const receiverSocket = connectedUsers[receiver].socketId
+      socket.to(receiverSocket).emit("privateMessage", newChat)
+      socket.emit("privateMessage", newChat);
+      console.log(true);
+      console.log(newChat);
+
+      return;
+    }
+    console.log(false);
+  })
+
+  //when user is typing  in a PM
+  socket.on('privateTyping', ({ sender, receiver }) => {
+    if (receiver in connectedUsers) {
+      const receiverSocket = connectedUsers[receiver].socketId
+      socket.to(receiverSocket).emit("privateTyping", sender);
+      console.log(true);
+      return;
+    }
+    console.log(false);
+  })
 });
 
 

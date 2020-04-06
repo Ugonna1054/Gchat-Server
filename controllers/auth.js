@@ -2,7 +2,8 @@ const bcrypt = require('bcrypt');
 const { User, validateLogin, validatePassword, validatePasswordReset } = require('../models/User');
 const { generateToken, generateCode } = require("../services/utils")
 const { mailService } = require("../services/mail")
-const moment = require("moment")
+const moment = require("moment");
+const {Group} = require("../models/Group")
 
 const auth = {
     //Login
@@ -748,12 +749,12 @@ const auth = {
 
     //update user token
     updateSchema: async (req, res) => {
-        let user = await User.updateMany(
+        let user = await Group.updateMany(
             {},
             {
-                "$set": {
-                    "tokenSchema.token": 400,
-                    "tokenSchema.expiryDate": 400,
+                "$set": { //useunset to remove a field from a schema e.g unset => lastMessage:true
+                    "lastMessage.sender": "5e849fac5c867d52e1ef1846",
+                    "lastMessage.message": "",
                 }
             },
             function (err, doc) {
