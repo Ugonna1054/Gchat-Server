@@ -3,7 +3,7 @@ const { User, validateLogin, validatePassword, validatePasswordReset } = require
 const { generateToken, generateCode } = require("../services/utils")
 const { mailService } = require("../services/mail")
 const moment = require("moment");
-const {Group} = require("../models/Groupss")
+const {Group} = require("../models/Group")
 
 const auth = {
     //Login
