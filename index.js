@@ -3,8 +3,7 @@ const socket = require('socket.io');
 const port = process.env.PORT || 5000;
 const cors = require('cors')
 const app = express();
-const { createChat } = require("./utils/factories")
-//const Message = require('./models/message');
+
 app.use(cors())
 
 
@@ -25,97 +24,6 @@ const server = app.listen(port, () => {
 
 let connectedUsers = {};
 
-
-
-//send private message
-// app.post('/privateChat', async (req, res) => {
-//   let io = socket(server);
-//   io.on('connection', (socket) => {
-
-//     console.log('A user connected', socket.id);
-
-//     socket.on('disconnect', () => {
-//       console.log("A user disconnected");
-//     });
-
-//     socket.on('chatMessage', async (data) => {
-//       let message = data.message
-//       let created = new Date
-//       let username = data.user
-
-//       let response = await new Message({
-//         message,
-//         created,
-//         username
-//       })
-
-//       await response.save()
-//       socket.broadcast.emit('chatMessage', (data));
-
-//     });
-
-//     socket.on('typing', (data) => {
-//       socket.broadcast.emit('typing', (data));
-//     });
-
-//     socket.on('joined', (data) => {
-//       socket.broadcast.emit('joined', (data));
-//       socket.emit('connections', {
-//         id: socket.id,
-//         number: Object.keys(io.sockets.connected).length
-//       });
-//     });
-
-//     socket.on('leave', (data) => {
-//       socket.broadcast.emit('leave', (data));
-//       console.log(data);
-
-//     });
-
-//   });
-// })
-
-
-//working unordered group chat
-// let io =  socket(server);
-// io.on('connection', (socket) => {
-
-// console.log('A user connected', socket.id);
-
-// //  socket.emit('connections', Object.keys(io.sockets.connected).length);
-
-//  socket.on('disconnect', () => {
-//      console.log("A user disconnected");
-//  });
-
-//  socket.on('chatMessage',  (data) => {
-//  socket.to(data.group).emit('chatMessage', (data));
-// // socket.to(data.userid).emit('chatMessage', (data));
-// });
-
-//  socket.on('typing', (data) => {
-//      socket.to(data.group).emit('typing', (data));
-//  });
-
-//  socket.on('joined', (data) => {
-//       socket.join(data.group)
-//       socket.emit('connections', {
-//         id : socket.id,
-//         number : Object.keys(io.sockets.connected).length,
-//         group : data.group
-//       })
-
-//       socket.to(data.group).emit('joined', data)  
-//     console.log(socket.rooms);
-//  });
-
-//  socket.on('leave', (data) => {
-//      socket.broadcast.emit('leave', (data));
-//      console.log(data);
-
-//  }); 
-// //  io.emitter.setMaxListeners(15)
-// });
 
 
 //test unordered private chat
@@ -191,15 +99,11 @@ io.on('connection', (socket) => {
   //events for private message
 
   //Private message
-  socket.on("privateMessage", ({ receiver, sender }) => {
-    if (receiver in connectedUsers) {
-      const newChat = createChat(`${receiver}&${sender}`, [receiver, sender])
-      const receiverSocket = connectedUsers[receiver].socketId
-      socket.to(receiverSocket).emit("privateMessage", newChat)
-      socket.emit("privateMessage", newChat);
+  socket.on("privateMessage", (data) => {
+    if (data.receiver in connectedUsers) {
+      const receiverSocket = connectedUsers[data.receiver].socketId
+      socket.to(receiverSocket).emit("privateMessage", data)
       console.log(true);
-      console.log(newChat);
-
       return;
     }
     console.log(false);

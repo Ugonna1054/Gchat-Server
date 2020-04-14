@@ -40,5 +40,46 @@ function validateMessage(message) {
 //define model
 const Message = mongoose.model('Message',MessageSchema);
 
+
+//define private message Schema
+const PrivateMessageSchema = new Schema({
+  message : {
+    type : String,
+    required:true
+  },
+  sender : {
+    type:ObjectId,
+    required:true,
+    ref:"User",
+    index:true
+  },
+  receiver : {
+    type:ObjectId,
+    ref:"User",
+    required:true,
+    index:true
+  }
+},
+{timestamps:true})
+
+//Joi validation function 
+function validatePrivateMessage(message) {
+  const schema = Joi.object().keys({
+    message: Joi.string().required(),
+
+    receiver:Joi.string().required(),
+    
+  })
+
+  return schema.validate(message);
+}
+
+
+//define model
+const PrivateMessage = mongoose.model('PrivateMessage',PrivateMessageSchema);
+
+
 exports.Message = Message;
-exports.validateMessage = validateMessage
+exports.validateMessage = validateMessage;
+exports.PrivateMessage = PrivateMessage;
+exports.validatePrivateMessage = validatePrivateMessage
