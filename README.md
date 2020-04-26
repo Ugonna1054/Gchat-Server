@@ -1,4 +1,4 @@
-# socket-server
+# A Chat/information and resource sharing Application for school students in Africa
 
 
 ``` bash
